@@ -1,9 +1,9 @@
 #india_map_dropdown .Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
-   color: #f7f3f3;
+	color: #f7f3f3;
 }
 
 #india_map_dropdown .Select.has-value.Select--single > .Select-control .Select-value .Select-value-label, .Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
-    color: #f7f3f3;
+	color: #f7f3f3;
 }
 
 .Select.has-value.Select--single > .Select-control .Select-value .Select-value-label{
