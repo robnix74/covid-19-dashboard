@@ -12,4 +12,4 @@ print(cp)
 message = 'auto-update'
 
 cp = cmd.run(f"git commit -m '{message}'", check=True, shell=True)
-cp = cmd.run("git push covid-19-dashboard master -f", check=True, shell=True)
+cp = cmd.run("git push covid-19-dashboard master", check=True, shell=True)
