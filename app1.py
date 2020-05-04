@@ -134,13 +134,12 @@ metrics_cumulative['daily_active'] = metrics_cumulative.Active.diff().fillna(met
 metrics_cumulative['daily_recovered'] = metrics_cumulative.Recovered.diff().fillna(metrics_cumulative.Recovered)
 metrics_cumulative['daily_deceased'] = metrics_cumulative.Deceased.diff().fillna(metrics_cumulative.Deceased)
 
+prev_mode = 'Cumulative'
 
 #--------------------------------- APP START ---------------------------------#
 #<link href="F:/Learnings/Plotly and Dash/Interactive Python Dashboards with Plotly and Dash/Scripts/assets/style.css" rel="stylesheet" type="text/css">
 #<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/darkly/bootstrap.min.css" rel="stylesheet" type="text/css">
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
-
-server = app.server
 
 # app.index_string = '''
 # <!DOCTYPE html>
@@ -377,17 +376,20 @@ app.layout = html.Div([
 #------- Daily Metrics -------#
 
 	html.Div([
-		dbc.Button("Cumulative", id="cum_id", outline=True, color="warning", active=True, className="mr-1")
-	],
-		style = {'width' : '7%', 'margin-left' : '10px', 'margin-top' : '50px', 'display' : 'inline-block'}
-	),
-
-
-	html.Div([
+		dbc.Button("Cumulative", id="cum_id", outline=True, color="warning", active=True, className="mr-1"),
 		dbc.Button("Daily", id='daily_id', outline=True, color="info", active=True, className="mr-1")
 	],
-		style = {'width' : '7%', 'margin-left' : '15px', 'margin-top' : '50px', 'display' : 'inline-block'}
+		style = {'width' : '20%', 'margin-left' : '10px', 'margin-top' : '50px', 'display' : 'inline-block'}
 	),
+
+
+	# html.Div([
+	# 	dbc.Button("Daily", id='daily_id', outline=True, color="info", active=True, className="mr-1")
+	# ],
+	# 	style = {'width' : '7%', 'margin-left' : '15px', 'margin-top' : '50px', 'display' : 'inline-block'}
+	# ),
+
+	# html.Div(id='butt_out'),
 	
 
 	html.Div([
@@ -559,6 +561,15 @@ def update_daily_metrics(date, cum_time, daily_time):
 	)
 
 	ctx = dash.callback_context
+	
+	ctx_msg = json.dumps({
+        'states': ctx.states,
+        'triggered': ctx.triggered,
+        'inputs': ctx.inputs
+    }, indent=2)
+
+	global prev_mode
+	mode = prev_mode
 
 	if not ctx.triggered:
 		mode = 'Cumulative'
@@ -566,14 +577,18 @@ def update_daily_metrics(date, cum_time, daily_time):
 		val = ctx.triggered[0]['prop_id'].split('.')[0]
 		if val == 'cum_id':
 			mode = 'Cumulative'
-		else:
+		elif val == 'daily_id':
 			mode = 'Daily'
+		else:
+			mode = prev_mode
 
 	display_type = []
 	if mode == 'Cumulative':
 		display_type = ['Confirmed', 'Active', 'Recovered', 'Deceased']
 	else:
 		display_type = ['daily_confirmed', 'daily_active', 'daily_recovered', 'daily_deceased']
+
+	prev_mode = mode
 
 	confirmed_data = [go.Scatter(
 				x = metrics_cumulative[(metrics_cumulative['Date'] >= pd.to_datetime(start, format = "%d-%m-%Y")) & (metrics_cumulative['Date'] <= pd.to_datetime(end, format = "%d-%m-%Y"))]['Date'],
@@ -630,4 +645,4 @@ def update_daily_metrics(date, cum_time, daily_time):
 
 
 if __name__ == '__main__':
-	app.run_server()
+	app.run_server(debug = True)
