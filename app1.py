@@ -140,6 +140,8 @@ prev_mode = 'Cumulative'
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 
+server = app.server()
+
 buttons = html.Div(
 	[
 		dbc.Button("Cumulative", id="cum_id", outline=True, color="warning", active=True, className="mr-1"),
