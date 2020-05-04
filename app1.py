@@ -137,82 +137,8 @@ metrics_cumulative['daily_deceased'] = metrics_cumulative.Deceased.diff().fillna
 prev_mode = 'Cumulative'
 
 #--------------------------------- APP START ---------------------------------#
-#<link href="F:/Learnings/Plotly and Dash/Interactive Python Dashboards with Plotly and Dash/Scripts/assets/style.css" rel="stylesheet" type="text/css">
-#<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/darkly/bootstrap.min.css" rel="stylesheet" type="text/css">
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 
-# app.index_string = '''
-# <!DOCTYPE html>
-# <html >
-# <head>
-#   <meta charset="UTF-8">
-#   <meta name="viewport" content="width=device-width">
-#   <title>Covid-19 Tracker</title>
-# </head>
-# <body>
-#  <main>
-#  <h1 style="text-align:center;color: #b48608;font-family: 'Droid serif', serif;font-size: 36px; font-weight: 400; 
-#   font-style: italic; line-height: 44px;margin: 0 0 12px; text-align: center;">COVID-19 TRACKER</h1>
-#   <h2 style="text-align:center">Summary Statistics</h2>
-# </main>
-# <ul>
-#   <li class="card">
-#     <div class="card__flipper">
-#       <div class="card__front">
-#         <p class="card__name"><span>Confirmed</span><br>Cases</p>
-#         <p class="card__num">{confirmed}</p>
-#       </div>
-#     </div>
-#   </li>
-#   <li class="card">
-#     <div class="card__flipper">
-#        <div class="card__front">
-#          <p class="card__name"><span>Active</span><br>Cases</p>
-#         <p class="card__num">{active}</p>
-#       </div>
-#     </div>
-#   </li>
-#   <li class="card">
-#     <div class="card__flipper">
-#        <div class="card__front">
-#         <p class="card__name"><span>Recovered</span><br>Cases</p>
-#         <p class="card__num">{recovered}</p>
-#       </div>
-#     </div>
-#   </li>
-#   <li class="card">
-#     <div class="card__flipper">
-#        <div class="card__front">
-#         <p class="card__name"><span>Deceased</span><br>Cases</p>
-#         <p class="card__num">{deceased}</p>
-#       </div>
-#     </div>
-#   </li>
-#   <li class="card">
-#     <div class="card__flipper">
-#        <div class="card__front">
-#         <p class="card__name"><span>Total</span><br>Tested</p>
-#         <p class="card__num">{tested}</p>
-#       </div>
-#     </div>
-#   </li>
-#   <li class="card">
-#     <div class="card__flipper">
-#        <div class="card__front">
-#         <p class="card__name"><span>Drew</span><br>Brees</p>
-#         <p class="card__num">9</p>
-#       </div>
-#     </div>
-#   </li>
-# </ul>
-# </body>
-# {app_entry}        
-# {config}
-# {scripts}
-# {renderer}
-# </html>
-# '''.format(confirmed = latest_confirmed, active = latest_active, recovered = latest_recovered, deceased = latest_deaths, tested = latest_tested,
-# 	app_entry = "{%app_entry%}", config = "{%config%}", scripts = "{%scripts%}", renderer = "{%renderer%}")
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 
 buttons = html.Div(
 	[
