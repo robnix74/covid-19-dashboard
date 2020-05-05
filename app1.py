@@ -19,7 +19,8 @@ import dash_table
 import plotly.offline as pyo
 import plotly.graph_objs as go
 
-#kaggle datasets download sudalairajkumar/covid19-in-india -p ./covid --unzip
+kaggle.api.authenticate()
+kaggle.api.dataset_download_files('sudalairajkumar/covid19-in-india', path='F:/Learnings/Plotly and Dash/Interactive Python Dashboards with Plotly and Dash/Scripts/covid', unzip=True)
 
 for i in list(map(lambda x: x.split('.csv')[0],os.listdir('./covid'))):
     exec(i + ' = pd.read_csv("./covid/' + i +'.csv")')
@@ -137,82 +138,9 @@ metrics_cumulative['daily_deceased'] = metrics_cumulative.Deceased.diff().fillna
 prev_mode = 'Cumulative'
 
 #--------------------------------- APP START ---------------------------------#
-#<link href="F:/Learnings/Plotly and Dash/Interactive Python Dashboards with Plotly and Dash/Scripts/assets/style.css" rel="stylesheet" type="text/css">
-#<link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/darkly/bootstrap.min.css" rel="stylesheet" type="text/css">
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 
-# app.index_string = '''
-# <!DOCTYPE html>
-# <html >
-# <head>
-#   <meta charset="UTF-8">
-#   <meta name="viewport" content="width=device-width">
-#   <title>Covid-19 Tracker</title>
-# </head>
-# <body>
-#  <main>
-#  <h1 style="text-align:center;color: #b48608;font-family: 'Droid serif', serif;font-size: 36px; font-weight: 400; 
-#   font-style: italic; line-height: 44px;margin: 0 0 12px; text-align: center;">COVID-19 TRACKER</h1>
-#   <h2 style="text-align:center">Summary Statistics</h2>
-# </main>
-# <ul>
-#   <li class="card">
-#     <div class="card__flipper">
-#       <div class="card__front">
-#         <p class="card__name"><span>Confirmed</span><br>Cases</p>
-#         <p class="card__num">{confirmed}</p>
-#       </div>
-#     </div>
-#   </li>
-#   <li class="card">
-#     <div class="card__flipper">
-#        <div class="card__front">
-#          <p class="card__name"><span>Active</span><br>Cases</p>
-#         <p class="card__num">{active}</p>
-#       </div>
-#     </div>
-#   </li>
-#   <li class="card">
-#     <div class="card__flipper">
-#        <div class="card__front">
-#         <p class="card__name"><span>Recovered</span><br>Cases</p>
-#         <p class="card__num">{recovered}</p>
-#       </div>
-#     </div>
-#   </li>
-#   <li class="card">
-#     <div class="card__flipper">
-#        <div class="card__front">
-#         <p class="card__name"><span>Deceased</span><br>Cases</p>
-#         <p class="card__num">{deceased}</p>
-#       </div>
-#     </div>
-#   </li>
-#   <li class="card">
-#     <div class="card__flipper">
-#        <div class="card__front">
-#         <p class="card__name"><span>Total</span><br>Tested</p>
-#         <p class="card__num">{tested}</p>
-#       </div>
-#     </div>
-#   </li>
-#   <li class="card">
-#     <div class="card__flipper">
-#        <div class="card__front">
-#         <p class="card__name"><span>Drew</span><br>Brees</p>
-#         <p class="card__num">9</p>
-#       </div>
-#     </div>
-#   </li>
-# </ul>
-# </body>
-# {app_entry}        
-# {config}
-# {scripts}
-# {renderer}
-# </html>
-# '''.format(confirmed = latest_confirmed, active = latest_active, recovered = latest_recovered, deceased = latest_deaths, tested = latest_tested,
-# 	app_entry = "{%app_entry%}", config = "{%config%}", scripts = "{%scripts%}", renderer = "{%renderer%}")
+server = app.server
 
 buttons = html.Div(
 	[
@@ -339,13 +267,14 @@ app.layout = html.Div([
 
     ],
     	id='india_map_dropdown',
-    	style={"font-style":" italic", 'color' : '#f7f3f3', "font-size":" 20px", 'margin-left' : '10px', 'margin-top' : '35px', 'width': '20%', 'background-color': 'blue'}
+    	style={"font-style":" italic", 'color' : '#f7f3f3', "font-size":" 20px", 
+    	'margin-left' : '10px', 'margin-top' : '35px', 'width': '20%'}
     ),
 
     html.Div([
     	dcc.Graph(id='India_Heat_Map')
 	], 
-		style={'display':'inline-block', 'width': '60%', 'margin-left' : '10px', 'margin-top' : '15px'}
+		style={'display':'inline-block', 'width': '50%', 'margin-left' : '10px', 'margin-top' : '15px'}
     ),
 
     html.Div([
@@ -354,7 +283,7 @@ app.layout = html.Div([
     	)
 	],
 		style={ 'display':'inline-block', 'width' : '30%', 'float' : 'right', 
-				'padding-top' : '25px', 'margin-top' : '50px', 'margin-right' : '80px'
+				'padding-top' : '25px', 'margin-top' : '50px', 'margin-right' : '60px'
 				}
 	),
 #------- Data Table -------#
@@ -486,7 +415,7 @@ def update_graph(metric):
 					)
 	fig.update_layout(mapbox_style="carto-positron", mapbox_zoom=4.22, mapbox_center={"lat": 22.5458, "lon": 82.0882},
 						xaxis=dict(fixedrange=True), yaxis=dict(fixedrange=True), dragmode=False)
-	fig.update_layout(height=800, width=1000, margin={"r":0,"t":0,"l":0,"b":0})
+	fig.update_layout(height=800, width=800, margin={"r":0,"t":0,"l":0,"b":0})
 
 	return fig
 
@@ -620,27 +549,6 @@ def update_daily_metrics(date, cum_time, daily_time):
 	deceased_fig = go.Figure(data = deceased_data, layout = deceased_layout)
 
 	return confirmed_fig, active_fig, recovered_fig, deceased_fig
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
