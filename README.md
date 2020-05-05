@@ -6,6 +6,8 @@ The Covid-19-India-Tracker dashboard tracks the metrics and trends of the Covid-
 
 The various sections of the dashboard are explained below.
 
+***
+
 ### Summary Statistics
 
 The dashboard begins with the section that displays certain summary statistics calculated upto the time the dashboard was updated. All of the numbers are only for the country of India.
@@ -19,15 +21,21 @@ The dashboard begins with the section that displays certain summary statistics c
 
 These will further be referred to as metrics.
 
+***
+
 ### Virus Spread across India
 
 The statewise distribution of the different metrics mentioned in the previous section is visualised in a map of India. The type of cases namely _Confirmed, Active, Recovered and Deceased_ can be selected using the _dropdown_ provided. The states are given a color based on the number of cases which is represented in the colorbar present on the right. When _hovering over the states_, a table appears in the right which gives additional details about the state including the ranking of the state compared to other states.
 
 The plot can be zoomed and moved using basic touchpad features. Moreover, plotly provides various features like zoom, select etc which are present on the top right side of every plot.
 
+***
+
 ### Data Table
 
 A table is provided with the details of all the states of India. An additional information is the ranking provided for states based on the cases. The columns can be sorted to get a better view of the data.
+
+***
 
 ### Metrics Trend 
 
