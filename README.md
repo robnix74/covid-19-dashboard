@@ -9,7 +9,10 @@ The various sections of the dashboard are explained below. Before that, this is 
 ![The complete view of the dashboard is shown here](./Images/full_dashboard.png "Full Dashboard")
 
 
+
 ***
+
+
 
 ### Summary Statistics
 
@@ -51,5 +54,7 @@ A table is provided with the details of all the states of India. An additional i
 ![alt text](./Images/daily_metrics.png "Metrics Trend")
 
 This section gives a visual representation of the metrics for the country as a whole. The mode of visualisation can be toggled between Cumulative and Daily using the _buttons_ provided. The _date slider_ can be used to view in on the trend of the metrics for a specific date range. By default, the date is set to the date of the first observed case to the last updated date. The date range chosen will be displayed below for your reference. There are four plots that follow which shows the trend for each metric separately.
+
+### End Notes
 
 This is my first shot at making a dashboard as well as working with front end technologies. If you would like to point out any mistakes or if you have any queries or suggestions, please feel free to reach out to me [here](https://www.linkedin.com/in/robnix16pd30 "Linkedin")
