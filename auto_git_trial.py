@@ -1,15 +1,43 @@
 import subprocess as cmd
+import os
 
-cp = cmd.run("git add .", check=True, shell=True)
-print(cp)
+success_flag = 1
 
-# response = input("Do you want to use the default message for this commit?([y]/n)\n")
-# message = "auto-update"
+try:
+	os.chdir('F:/Learnings/Plotly and Dash/Interactive Python Dashboards with Plotly and Dash/Scripts/git_test')
+except Exception as e:
+	print('OS Error : ', e)
 
-# if response.startswith('n'):
-#     message = input("Type commit message\n")
 
-message = 'auto-update'
+try:
+	cp = cmd.run("git add .", check=True, shell=True)
+	#print(cp)
 
-cp = cmd.run(f"git commit -m '{message}'", check=True, shell=True)
-cp = cmd.run("git push covid-19-dashboard master", check=True, shell=True)
+	message = 'test-update'
+
+	cp = cmd.run("git commit -m {}".format(message), check=True, shell=True)
+	#print(cp)
+
+	cp = cmd.run("git push https://github.com/robnix74/test master", check=True, shell=True)
+	#print(cp)
+
+except Exception as e:
+	success_flag = 0
+	print('Auto Git Failed\n','Error Message : ',e)
+
+if success_flag == 1:
+
+	try:
+		print('Starting to commit to heroku master')
+
+		cp = cmd.run("git push heroku master", check=True, shell=True)
+		#print(cp)
+
+		cp = cmd.run("heroku ps:scale web=1")
+		#print(cp)
+
+	except Exception as e:
+		success_flag = 0
+		print('Auto Git Heroku Failed\n','Error Message : ',e)
+
+		

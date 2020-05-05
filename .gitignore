@@ -2,3 +2,5 @@ venv
 *.pyc
 .DS_Store
 .env
+.kaggle
+auto_git_trial.py
