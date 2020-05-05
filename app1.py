@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import kaggle
 
 import pandas as pd
