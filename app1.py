@@ -19,8 +19,8 @@ import dash_table
 import plotly.offline as pyo
 import plotly.graph_objs as go
 
-kaggle.api.authenticate()
-kaggle.api.dataset_download_files('sudalairajkumar/covid19-in-india', path='F:/Learnings/Plotly and Dash/Interactive Python Dashboards with Plotly and Dash/Scripts/covid', unzip=True)
+#kaggle.api.authenticate()
+#kaggle.api.dataset_download_files('sudalairajkumar/covid19-in-india', path='./covid', unzip=True)
 
 for i in list(map(lambda x: x.split('.csv')[0],os.listdir('./covid'))):
     exec(i + ' = pd.read_csv("./covid/' + i +'.csv")')

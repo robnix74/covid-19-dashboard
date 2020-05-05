@@ -4,3 +4,4 @@ venv
 .env
 .kaggle
 auto_git_trial.py
+data_update.py
