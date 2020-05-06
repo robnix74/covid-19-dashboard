@@ -1,17 +1,61 @@
 #india_map_dropdown .Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
-	color: #f7f3f3;
+   color: #f7f3f3;
 }
 
 #india_map_dropdown .Select.has-value.Select--single > .Select-control .Select-value .Select-value-label, .Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
+    color: #f7f3f3;
+}
+
+#india_map_dropdown .Select.has-value.Select--single > .Select-control .Select-value .Select-value-label{
 	color: #f7f3f3;
 }
 
-.Select.has-value.Select--single > .Select-control .Select-value .Select-value-label{
+#india_map_dropdown .Select, .Select div, .Select input, .Select span{
+  background-color : blue;
+}
+
+#survival_wrapper .Select, .Select div, .Select input, .Select span {
+  background-color : blue;
+  /*#F0E68C;*/
+}
+
+#survival_wrapper .Select.is-focused > .Select-control{
+  background-color : blue;
+}
+
+#survival_wrapper .Select--multi .Select-value {
+  color : #f7f3f3;
+  }
+
+#india_map_dropdown element.style {
+  color : #f7f3f3;
+}
+
+#survival_wrapper element.style {
+  color : #f7f3f3;
+}
+
+#survival_wrapper .VirtualizedSelectFocusedOption {
+  background-color: silver;
+}
+
+/*#90EE90
+#F0E68C
+*/
+
+
+/*.Select.has-value.Select--single > .Select-control .Select-value .Select-value-label{
 	color: #f7f3f3;
 }
-.Select, .Select div, .Select input, .Select span{
-	background-color : red;
+*/
+/*.Select.has-value.Select--single > .Select-control .Select-value .Select-value-label, .Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label{
+	color : #f7f3f3;
+}*/
+
+/*.Select.has-value.Select--single > .Select-control .Select-value .Select-value-label, .Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label{
+	color: #f7f3f3;
 }
+*/
 
 /*#375a7f*/
 ul {
