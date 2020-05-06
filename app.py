@@ -1,5 +1,3 @@
-import kaggle
-
 import pandas as pd
 import numpy as np
 
