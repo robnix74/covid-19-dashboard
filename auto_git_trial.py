@@ -4,7 +4,7 @@ import os
 success_flag = 1
 
 try:
-	os.chdir('F:/Learnings/Plotly and Dash/Interactive Python Dashboards with Plotly and Dash/Scripts/git_test')
+	os.chdir('F:/Learnings/Plotly and Dash/Interactive Python Dashboards with Plotly and Dash/Scripts/app_deploy')
 except Exception as e:
 	print('OS Error : ', e)
 
@@ -18,7 +18,7 @@ try:
 	cp = cmd.run("git commit -m {}".format(message), check=True, shell=True)
 	#print(cp)
 
-	cp = cmd.run("git push https://github.com/robnix74/test master", check=True, shell=True)
+	cp = cmd.run("git push https://github.com/robnix74/covid-19-dashboard master", check=True, shell=True)
 	#print(cp)
 
 except Exception as e:
