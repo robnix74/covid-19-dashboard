@@ -19,8 +19,8 @@ import dash_table
 import plotly.offline as pyo
 import plotly.graph_objs as go
 
-kaggle.api.authenticate()
-kaggle.api.dataset_download_files('sudalairajkumar/covid19-in-india', path='F:/Learnings/Plotly and Dash/Interactive Python Dashboards with Plotly and Dash/Scripts/covid', unzip=True)
+#kaggle.api.authenticate()
+#kaggle.api.dataset_download_files('sudalairajkumar/covid19-in-india', path='F:/Learnings/Plotly and Dash/Interactive Python Dashboards with Plotly and Dash/Scripts/covid', unzip=True)
 
 for i in list(map(lambda x: x.split('.csv')[0],os.listdir('./covid'))):
     exec(i + ' = pd.read_csv("./covid/' + i +'.csv")')
@@ -171,7 +171,7 @@ prev_mode = 'Cumulative'
 
 #--------------------------------- APP START ---------------------------------#
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
-
+app.title = "Covid-19 Tracker"
 server = app.server
 
 buttons = html.Div(
@@ -180,8 +180,6 @@ buttons = html.Div(
 		dbc.Button("Daily", id='daily_id', outline=True, color="info", active=True, className="mr-1"),
     ],
 )
-
-app.title = "Covid-19 Tracker"
 
 app.layout = html.Div([
 
