@@ -140,7 +140,7 @@ statewise_count['Active'] = statewise_count.Confirmed - (statewise_count.Decease
 statewise_count = pd.merge(statewise_count, population_india_census2011, how = 'left', left_on = 'State/UnionTerritory', right_on = 'State / Union Territory')
 statewise_count['deceased_perc'] = round((statewise_count['Deceased']/statewise_count['Confirmed'])*100,2)
 statewise_count['recovered_perc'] = round((statewise_count['Recovered']/statewise_count['Confirmed'])*100,2)
-statewise_count.fillna(0,inplace=True)
+statewise_count.fillna(0, inplace=True)
 
 bubble_hover_text = []
 for index, row in statewise_count.iterrows():
@@ -164,13 +164,40 @@ statewise_count['hovertext'] = bubble_hover_text
 
 total_population = population_india_census2011.Population.sum()
 
-
 prev_mode = 'Cumulative'
+
+# Survival Analysis
+
+covid_19_india.sort_values(['State/UnionTerritory','Date'], inplace=True)
+statewise = covid_19_india.groupby('State/UnionTerritory')
+
+covid_19_india['daily_confirmed'] =  statewise.Confirmed.diff().fillna(covid_19_india.Confirmed)
+covid_19_india['daily_recovered'] =  statewise.Confirmed.diff().fillna(covid_19_india.Recovered)
+covid_19_india['daily_deceased'] =  statewise.Confirmed.diff().fillna(covid_19_india.Deceased)
+
+life_table = pd.merge(population_india_census2011[['State / Union Territory','Population']],covid_19_india, left_on = 'State / Union Territory',right_on= 'State/UnionTerritory',how='right')[['State / Union Territory','Date','Population','Recovered','Deceased','Confirmed','daily_recovered','daily_deceased','daily_confirmed']].sort_values(['State / Union Territory','Date']).reset_index(drop = True)
+life_table['Censored'] = life_table.Recovered + life_table.Deceased
+life_table['daily_censored'] = life_table['daily_recovered'] + life_table['daily_deceased']
+life_table['nrisk'] = 0
+for i in life_table['State / Union Territory'].unique():
+    if i==i:
+        life_table.loc[life_table['State / Union Territory'] == i,'nrisk'] = [list(life_table[life_table['State / Union Territory']==i].Population)[0]] + list(life_table[life_table['State / Union Territory']==i].Population - life_table[life_table['State / Union Territory']==i].Confirmed - life_table[life_table['State / Union Territory']==i].Censored)[:-1]
+life_table['avg_nrisk'] = life_table['nrisk'] - life_table['daily_censored']/2
+life_table['Confirmed_proportion'] = life_table['daily_confirmed']/life_table.avg_nrisk
+life_table['Surviving_proportion'] = 1 - life_table.Confirmed_proportion
+for i in life_table['State / Union Territory'].unique():
+    if i==i:
+        life_table.loc[life_table['State / Union Territory'] == i,'Survival_prob'] = life_table[life_table['State / Union Territory']==i].Surviving_proportion.cumprod()
+
+survival = pd.pivot_table(life_table,index = 'Date',columns = 'State / Union Territory',values = 'Survival_prob')
+survival.fillna(1, inplace = True)
 
 #--------------------------------- APP START ---------------------------------#
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
+
 app.title = "Covid-19 Tracker"
 server = app.server
+app.config.suppress_callback_exceptions = True
 
 buttons = html.Div(
 	[
@@ -179,10 +206,19 @@ buttons = html.Div(
     ],
 )
 
+app.title = "Covid-19 Tracker"
+
 app.layout = html.Div([
 
 	html.H1(children="COVID-19 TRACKER", style={"text-align":"center", "color":" #b48608", "font-family":" Droid serif, serif",
 			"font-size":" 50px", "font-weight":" 700", "font-style":" italic", "line-height":" 44px", "margin":" 0 0 12px"}),
+
+	html.Div(
+		dcc.Markdown(
+			"Recent Update : {}".format(str(covid_19_recent_date.strftime("%b %d"))),
+		),
+			style = {'textAlign' : 'center'}
+	),
 
 	html.Div([
 		html.H4("Summary Statistics",style={ "color" : "#c9d0d4", "font-family" : "Merriweather, serif", "font-size":" 30px", 
@@ -399,9 +435,19 @@ app.layout = html.Div([
 		}
 	),
 
+	html.Div(
+		dcc.Markdown(
+			'''
+			In the below graph, each bubble represents a state and the bubble size is based on the population of the state.  
+			A bubble with a color value close to 100 (yellowish) indicates a high recoverey percentage for the state.
+			'''
+		),
+		style={'margin-top' : '40px'}
+	),
+
 	html.Div([
 		dcc.Graph(
-			id="bubble_plot",
+			id="bubble_plot_id",
 			figure={
 				'data' : [
 					go.Scatter(
@@ -437,14 +483,37 @@ app.layout = html.Div([
 		style = {'marginTop' : '30px'}
 	),
 
+	html.Div([
+		dcc.Dropdown(
+			id='survival_dropdown',
+            options=[{'label': i, 'value': i} for i in survival.columns],
+            placeholder="Select State(s)",
+            value=covid_19_india.groupby('State/UnionTerritory').sum().sort_values('Active').iloc[-3:].index.tolist(),
+            multi=True
+			)
+	],
+		id='survival_wrapper',
+		style={"width" : "30%", "font-style":" italic", 'color' : '#f7f3f3', "font-size":" 20px", 'margin-top' : '30px'}
+	),
+
+	html.Div([
+		dcc.Graph(
+			id="survival_analysis_id")
+	],
+		style={
+			'margin-top' : '30px',
+			'border' : '2px solid red'
+		}
+	),
+
 	html.Div(
 		dcc.Markdown(
 			'''
-			Who did this?[ Me!](https://www.linkedin.com/in/robnix16pd30 "Linkedin")  
-			Documentation and Source Code [Github](https://github.com/robnix74/covid-19-dashboard "Github")
+			Who did this?[ Him](https://www.linkedin.com/in/robnix16pd30 "Linkedin") and [Her](http://linkedin.com/in/sushma-dhamodharan-a1858a134)  
+			Documentation and Source Code : [Github](https://github.com/robnix74/covid-19-dashboard "Github")
 			'''
 		),
-		style = {'margin-top' : '20px', 'textAlign': 'center', 'float': 'center'}
+		style = {'margin-top' : '40px', 'textAlign': 'center', 'float': 'center'}
 	)
 ])
 
@@ -615,6 +684,35 @@ def update_daily_metrics(date, cum_time, daily_time):
 	deceased_fig = go.Figure(data = deceased_data, layout = deceased_layout)
 
 	return confirmed_fig, active_fig, recovered_fig, deceased_fig
+
+
+@app.callback(
+	Output('survival_analysis_id', 'figure'),
+	[Input('survival_dropdown', 'value')]
+)
+
+def survival_graph(states):
+	
+	traces = [{
+				"x": survival.index,
+				"y": survival[states[i]],
+				"line": {"shape": 'hv'},
+				"mode": 'lines',
+				"name": states[i],
+				"type": 'scatter'} for i in range(len(states))]
+
+	layout = go.Layout(
+				title = dict(text = 'Survival Analysis', x = 0.5, y = 0.95),
+       			xaxis = dict(title = 'Days'),
+       			yaxis = dict(title = 'Survival Probability'),
+       			hovermode = 'closest',
+       			height = 800,
+       			plot_bgcolor= "#F0E68C",
+       			paper_bgcolor = "#F0E68C"
+		)
+
+	fig = go.Figure(data = traces, layout = layout)
+	return fig
 
 
 if __name__ == '__main__':
