@@ -2,7 +2,7 @@
 #### Update in Progress
 ## Introduction
 
-The Covid-19-India-Tracker dashboard tracks the metrics and trends of the Covid-19 pandemic for the country of India. It is bulit using Python, Dash and Plotly using the dataset made available in [Kaggle Covid-19-In-India](https://www.kaggle.com/sudalairajkumar/covid19-in-india "Covid-19-In-India"). The dashboard is deployed as a web app using Heroku and is live at https://app-rob-trial.herokuapp.com.
+The Covid-19-India-Tracker dashboard tracks the metrics and trends of the Covid-19 pandemic for the country of India. It is bulit using Python, Dash and Plotly using the dataset made available in [Kaggle Covid-19-In-India](https://www.kaggle.com/sudalairajkumar/covid19-in-india "Covid-19-In-India"). The dashboard is deployed as a web app using Heroku and is live at https://covid-19-dashboard-india.herokuapp.com.
 
 The various sections of the dashboard are explained below. Before that, this is how the entire dashboard look like.
 
@@ -25,7 +25,7 @@ The dashboard begins with the section that displays certain summary statistics, 
 * Deceased Cases&nbsp; :  Cumulative number of cases deceased.
 * Active Cases&nbsp; &nbsp; &nbsp; &nbsp; : Cumulative number of cases currently active and undergoing treatment.<br>
   * `Confirmed Cases - (Recovered Cases + Deceased Cases)`
-* Total Tested&nbsp; &nbsp; &nbsp; &nbsp;: Cumulative number of samples tested for the covid-19 virus.
+* Total Tested&nbsp; &nbsp; &nbsp; &nbsp; : Cumulative number of samples tested for the covid-19 virus.
 
 These will further be referred to as metrics.
 
@@ -54,6 +54,40 @@ A table is provided with the details of all the states of India. An additional i
 ![alt text](./Images/daily_metrics.png "Metrics Trend")
 
 This section gives a visual representation of the metrics for the country as a whole. The mode of visualisation can be toggled between Cumulative and Daily using the _buttons_ provided. The _date slider_ can be used to view in on the trend of the metrics for a specific date range. By default, the date is set to the date of the first observed case to the last updated date. The date range chosen will be displayed below for your reference. There are four plots that follow which shows the trend for each metric separately.
+
+***
+
+### Statewise Performace 
+
+![alt text](./Images/bubble_plot.png "Statewise Performance)
+
+In this plot, we get a picture of how each state is reacting to the virus spread. The figure shows the plot of Confirmed cases against Active cases and shows an increasing trend as expected. To give additional insights, each state is represented as a bubble, with the size corresponding to the state's _population_.  
+
+Furthermore, the colour of each bubble(state) corresponds to the percentage of Recovered cases from the Confirmed cases. Thus, bubbles(states) with colors closer to the value of 100(greenish yellow) indicate _high recovery percentages_ for the state.  
+
+There is a _Note_ button in the dashboard which explains the same.
+
+***
+
+### Survival Analysis
+
+![alt text](./Images/survival_analysis.png "Survival Analysis")
+
+Survival Analysis refers to statistical methods used to determine the _time until which an event occurs_. Some examples of events may include time until the death of a patient undergoing treatment, time until which a machine stops working, time until which a patient gets infected from a spreading disease etc.  
+
+To get a better understanding of survival analysis, refer this [post](https://medium.com/analytics-vidhya/survival-analysis-an-introduction-87a94c98061 "Survival Analysis")
+
+The terms used for the analysis done here are given below:  
+
+**1. Event:** Getting infected by the Covid-19 virus.  
+**2. Censorship:** Patients who recover from or pass away due to the disease are considered to be censored.  
+**3. Survival Function:** Probability of getting affected by the Covid-19 virus.  
+
+There is a _Note_ button in the dashboard which explains the same.
+
+The graph shows the survival curves for three states with the most active cases by default. Using the _dropdown_ multiple states can be selected and their survival curves can be seen and compared.
+
+***
 
 ### End Notes
 
