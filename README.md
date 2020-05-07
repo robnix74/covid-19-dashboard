@@ -2,7 +2,7 @@
 #### Update in Progress
 ## Introduction
 
-The Covid-19-India-Tracker dashboard tracks the metrics and trends of the Covid-19 pandemic for the country of India. It is bulit using Python, Dash and Plotly using the dataset made available in [Kaggle Covid-19-In-India](https://www.kaggle.com/sudalairajkumar/covid19-in-india "Covid-19-In-India"). The dashboard is deployed as a web app using Heroku and is live at https://app-rob-trial.herokuapp.com.
+The Covid-19-India-Tracker dashboard tracks the metrics and trends of the Covid-19 pandemic for the country of India. It is bulit using Python, Dash and Plotly using the dataset made available in [Kaggle Covid-19-In-India](https://www.kaggle.com/sudalairajkumar/covid19-in-india "Covid-19-In-India"). The dashboard is deployed as a web app using Heroku and is live at https://covid-19-dashboard-india.herokuapp.com.
 
 The various sections of the dashboard are explained below. Before that, this is how the entire dashboard look like.
 
@@ -61,7 +61,9 @@ This section gives a visual representation of the metrics for the country as a w
 
 ![alt text](./Images/bubble_plot.png "Statewise Performance)
 
-In this plot, we get a picture of how each state is reacting to the virus spread. The figure shows the plot of Confirmed cases against Active cases and shows an increasing trend as expected. To give additional insights, each state is represented as a bubble, with the size corresponding to the state's _population_. Furthermore, the colour of each bubble(state) corresponds to the percentage of Recovered cases from the Confirmed cases. Thus, bubbles(states) with colors closer to the value of 100(greenish yellow) indicate _high recovery percentages_ for the state.  
+In this plot, we get a picture of how each state is reacting to the virus spread. The figure shows the plot of Confirmed cases against Active cases and shows an increasing trend as expected. To give additional insights, each state is represented as a bubble, with the size corresponding to the state's _population_.  
+
+Furthermore, the colour of each bubble(state) corresponds to the percentage of Recovered cases from the Confirmed cases. Thus, bubbles(states) with colors closer to the value of 100(greenish yellow) indicate _high recovery percentages_ for the state.  
 
 There is a _Note_ button in the dashboard which explains the same.
 
@@ -77,9 +79,9 @@ To get a better understanding of survival analysis, refer this [post](https://me
 
 The terms used for the analysis done here are given below:  
 
-1. Event: Getting infected by the Covid-19 virus.  
-2. Censorship: Patients who recover from or pass away due to the disease are considered to be censored.  
-3. Survival Function: Probability of getting affected by the Covid-19 virus.  
+**1. Event:** Getting infected by the Covid-19 virus.  
+**2. Censorship:** Patients who recover from or pass away due to the disease are considered to be censored.  
+**3. Survival Function:** Probability of getting affected by the Covid-19 virus.  
 
 There is a _Note_ button in the dashboard which explains the same.
 
