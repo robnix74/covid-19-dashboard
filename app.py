@@ -11,7 +11,7 @@ import dash
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 import dash_table
 
 import plotly.offline as pyo
@@ -136,7 +136,6 @@ metrics_cumulative['daily_deceased'] = metrics_cumulative.Deceased.diff().fillna
 # Bubble Plot
 
 statewise_count = covid_19_india[covid_19_india.Date == covid_19_recent_date]
-statewise_count['Active'] = statewise_count.Confirmed - (statewise_count.Deceased + statewise_count.Recovered)
 statewise_count = pd.merge(statewise_count, population_india_census2011, how = 'left', left_on = 'State/UnionTerritory', right_on = 'State / Union Territory')
 statewise_count['deceased_perc'] = round((statewise_count['Deceased']/statewise_count['Confirmed'])*100,2)
 statewise_count['recovered_perc'] = round((statewise_count['Recovered']/statewise_count['Confirmed'])*100,2)
@@ -198,15 +197,6 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 app.title = "Covid-19 Tracker"
 server = app.server
 app.config.suppress_callback_exceptions = True
-
-buttons = html.Div(
-	[
-		dbc.Button("Cumulative", id="cum_id", outline=True, color="warning", active=True, className="mr-1"),
-		dbc.Button("Daily", id='daily_id', outline=True, color="info", active=True, className="mr-1"),
-    ],
-)
-
-app.title = "Covid-19 Tracker"
 
 app.layout = html.Div([
 
@@ -338,7 +328,7 @@ app.layout = html.Div([
     html.Div([
     	dcc.Graph(id='India_Heat_Map')
 	], 
-		style={'display':'inline-block', 'width': '50%', 'margin-left' : '10px', 'margin-top' : '15px'}
+		style={'display':'inline-block', 'width': '50%', 'margin-left' : '10px', 'margin-top' : '30px'}
     ),
 
     html.Div([
@@ -400,7 +390,10 @@ app.layout = html.Div([
 	),
 
 	html.Div([
-		dcc.Graph(id="confirmed_graph_id")
+		dcc.Graph(
+			id="confirmed_graph_id",
+			config=dict(scrollZoom=False)
+		)
 	],
 		style={
 			'margin-top' : '50px',
@@ -435,14 +428,29 @@ app.layout = html.Div([
 		}
 	),
 
-	html.Div(
-		dcc.Markdown(
-			'''
-			In the below graph, each bubble represents a state and the bubble size is based on the population of the state.  
-			A bubble with a color value close to 100 (yellowish) indicates a high recoverey percentage for the state.
-			'''
-		),
-		style={'margin-top' : '40px'}
+	html.Div([
+        dbc.Button("Note: Statewise Performance", id="bubble_button_open", color="warning", outline=True),
+        dbc.Modal(
+            [
+                dbc.ModalHeader("Statewise Performance"),
+                dbc.ModalBody([
+                	dcc.Markdown(
+                		'''
+                		In the below graph, each bubble represents a state and the bubble size is based on the **population** of the state.  
+
+                		A bubble with a color corresponding to the value of 100 yellowish indicates that the state has a high **recovery percentage**
+                		'''
+                	),
+	                dbc.ModalFooter(
+	                    dbc.Button("Close", id="bubble_button_close", className="ml-auto")
+	                ),
+               	])
+            ],
+            id="bubble_modal",
+            size="lg"
+        ),
+	],
+		style = {'margin-top' : '30px'}
 	),
 
 	html.Div([
@@ -481,6 +489,37 @@ app.layout = html.Div([
 		),
 	],
 		style = {'marginTop' : '30px'}
+	),
+
+	html.Div([
+        dbc.Button("Note: Survival Analysis", id="survival_analysis_button_open", color="warning", outline=True),
+        dbc.Modal(
+            [
+                dbc.ModalHeader("Survival Analysis"),
+                dbc.ModalBody([
+                	dcc.Markdown(
+                		'''
+                		Survival Analysis is a statistical procedure used to calculate the duration of _time until an event occurs_.  
+                		Some examples of events are death of a patient undergoing treatment, failure of a machine, infection of a disease etc.  
+
+                		For more information about survival analysis, refer this [post](https://medium.com/analytics-vidhya/survival-analysis-an-introduction-87a94c98061)
+                		
+                		The definition of the terms used for this analysis are as follows:  
+                			1. **Event:** Getting infected with Covid-19.  
+                			2. **Censorship:** Recovering or dying from the disease.  
+                			3. **Survival Function:** Probability of getting infected with Covid-19.  
+                		'''
+                	),
+	                dbc.ModalFooter(
+	                    dbc.Button("Close", id="survival_analysis_button_close", className="ml-auto")
+	                ),
+               	])
+            ],
+            id="survival_analysis_modal",
+            size="lg"
+        ),
+	],
+		style = {'margin-top' : '30px'}
 	),
 
 	html.Div([
@@ -691,6 +730,7 @@ def update_daily_metrics(date, cum_time, daily_time):
 	[Input('survival_dropdown', 'value')]
 )
 
+
 def survival_graph(states):
 	
 	traces = [{
@@ -713,6 +753,26 @@ def survival_graph(states):
 
 	fig = go.Figure(data = traces, layout = layout)
 	return fig
+
+@app.callback(
+    Output("survival_analysis_modal", "is_open"),
+    [Input("survival_analysis_button_open", "n_clicks"), Input("survival_analysis_button_close", "n_clicks")],
+    [State("survival_analysis_modal", "is_open")],
+)
+def toggle_survival_analysis_modal(n1, n2, is_open):
+    if n1 or n2:
+        return not is_open
+    return is_open
+
+@app.callback(
+    Output("bubble_modal", "is_open"),
+    [Input("bubble_button_open", "n_clicks"), Input("bubble_button_close", "n_clicks")],
+    [State("bubble_modal", "is_open")],
+)
+def toggle_bubble_modal(n1, n2, is_open):
+    if n1 or n2:
+        return not is_open
+    return is_open
 
 
 if __name__ == '__main__':

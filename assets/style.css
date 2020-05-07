@@ -11,16 +11,16 @@
 }
 
 #india_map_dropdown .Select, .Select div, .Select input, .Select span{
-  background-color : blue;
+  background-color : purple;
 }
 
 #survival_wrapper .Select, .Select div, .Select input, .Select span {
-  background-color : blue;
+  background-color : purple;
   /*#F0E68C;*/
 }
 
 #survival_wrapper .Select.is-focused > .Select-control{
-  background-color : blue;
+  background-color : purple;
 }
 
 #survival_wrapper .Select--multi .Select-value {
@@ -36,7 +36,7 @@
 }
 
 #survival_wrapper .VirtualizedSelectFocusedOption {
-  background-color: silver;
+  background-color: lightblue;
 }
 
 /*#90EE90

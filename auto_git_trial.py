@@ -25,19 +25,17 @@ except Exception as e:
 	success_flag = 0
 	print('Auto Git Failed\n','Error Message : ',e)
 
-if success_flag == 1:
+# if success_flag == 1:
 
-	try:
-		print('Starting to commit to heroku master')
+# 	try:
+# 		print('Starting to commit to heroku master')
 
-		cp = cmd.run("git push heroku master", check=True, shell=True)
-		#print(cp)
+# 		cp = cmd.run("git push heroku master", check=True, shell=True)
+# 		print(cp)
 
-		cp = cmd.run("heroku ps:scale web=1")
-		#print(cp)
+# 		cp = cmd.run("heroku ps:scale web=1")
+# 		print(cp)
 
-	except Exception as e:
-		success_flag = 0
-		print('Auto Git Heroku Failed\n','Error Message : ',e)
-
-		
+# 	except Exception as e:
+# 		success_flag = 0
+# 		print('Auto Git Heroku Failed\n','Error Message : ',e)
