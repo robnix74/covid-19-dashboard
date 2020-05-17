@@ -59,7 +59,11 @@ This section gives a visual representation of the metrics for the country as a w
 
 ### Statewise Performace 
 
+<<<<<<< HEAD
 ![alt text](./Images/bubble_plot.png "Statewise Performance)
+=======
+![alt text](./Images/bubble_plot.png "Statewise Performance")
+>>>>>>> 06ea4410daf6cbe9723e6e6e205ba05117a4ccf4
 
 In this plot, we get a picture of how each state is reacting to the virus spread. The figure shows the plot of Confirmed cases against Active cases and shows an increasing trend as expected. To give additional insights, each state is represented as a bubble, with the size corresponding to the state's _population_.  
 
